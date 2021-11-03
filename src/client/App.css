@@ -1,0 +1,34 @@
+.App {
+  text-align: center;
+}
+
+header {
+  background-color: #282c34;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  padding: 16px;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+main {
+  padding: 32px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 32px auto 0 auto;
+}
+
+textarea {
+  margin: 8px 0;
+  height: 100px;
+}
