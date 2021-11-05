@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import Post from './Post';
-import Form from './Form';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import Post from "./Post";
+import Form from "./Form";
+import "./App.css";
+
 const API = `/.netlify/functions`;
 
 // State for loading, error and posts
@@ -34,7 +35,7 @@ const App = () => {
       if (!title || !content) return;
       setLoading(true);
       const body = JSON.stringify({ title, content });
-      await fetch(`${API}/add-post`, { method: 'POST', body });
+      await fetch(`${API}/add-post`, { method: "POST", body });
       return getPosts(); // Refresh all posts
     } catch (error) {
       setError(error);
@@ -44,7 +45,7 @@ const App = () => {
     try {
       setLoading(true);
       const body = JSON.stringify({ id });
-      await fetch(`${API}/delete-post`, { method: 'POST', body });
+      await fetch(`${API}/delete-post`, { method: "POST", body });
       return getPosts(); // Refresh all posts
     } catch (error) {
       setError(error);
