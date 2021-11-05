@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import Post from './Post';
-import Form from './Form';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import Post from "./Post";
+import Form from "./Form";
+import "./App.css";
+
 const API = `/.netlify/functions`;
 
 // State for loading, error and posts
@@ -9,6 +10,7 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [censorBadWords, setCensorBadWords] = useState(true);
 
   // When the component renders for the first time, fetch all the posts
   useEffect(() => {
@@ -34,7 +36,7 @@ const App = () => {
       if (!title || !content) return;
       setLoading(true);
       const body = JSON.stringify({ title, content });
-      await fetch(`${API}/add-post`, { method: 'POST', body });
+      await fetch(`${API}/add-post`, { method: "POST", body });
       return getPosts(); // Refresh all posts
     } catch (error) {
       setError(error);
@@ -44,11 +46,15 @@ const App = () => {
     try {
       setLoading(true);
       const body = JSON.stringify({ id });
-      await fetch(`${API}/delete-post`, { method: 'POST', body });
+      await fetch(`${API}/delete-post`, { method: "POST", body });
       return getPosts(); // Refresh all posts
     } catch (error) {
       setError(error);
     }
+  }
+
+  function toggleCensorship() {
+    setCensorBadWords((prevCensorBadWords) => !prevCensorBadWords);
   }
 
   // If error or loading, show a message
@@ -61,8 +67,22 @@ const App = () => {
       <header>SimpleBlog</header>
       <Form onAdd={({ title, content }) => addPost({ title, content })} />
       <div>
+        <div>
+          <input
+            type="checkbox"
+            id="censor"
+            name="censor"
+            onClick={toggleCensorship}
+            checked={censorBadWords}
+          />
+          <label for="censor">Censor rude words?</label>
+        </div>
         {posts.map((post) => (
-          <Post data={post} onDelete={() => deletePost({ id: post.id })} />
+          <Post
+            data={post}
+            onDelete={() => deletePost({ id: post.id })}
+            censorBadWords={censorBadWords}
+          />
         ))}
       </div>
       <hr />
