@@ -10,6 +10,7 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [censorBadWords, setCensorBadWords] = useState(true);
 
   // When the component renders for the first time, fetch all the posts
   useEffect(() => {
@@ -52,6 +53,10 @@ const App = () => {
     }
   }
 
+  function toggleCensorship() {
+    setCensorBadWords((prevCensorBadWords) => !prevCensorBadWords);
+  }
+
   // If error or loading, show a message
   if (error) return <p>Error: {error.message}</p>;
   if (loading) return <p>Loading...</p>;
@@ -62,8 +67,22 @@ const App = () => {
       <header>SimpleBlog</header>
       <Form onAdd={({ title, content }) => addPost({ title, content })} />
       <div>
+        <div>
+          <input
+            type="checkbox"
+            id="censor"
+            name="censor"
+            onClick={toggleCensorship}
+            checked={censorBadWords}
+          />
+          <label for="censor">Censor rude words?</label>
+        </div>
         {posts.map((post) => (
-          <Post data={post} onDelete={() => deletePost({ id: post.id })} />
+          <Post
+            data={post}
+            onDelete={() => deletePost({ id: post.id })}
+            censorBadWords={censorBadWords}
+          />
         ))}
       </div>
       <hr />
