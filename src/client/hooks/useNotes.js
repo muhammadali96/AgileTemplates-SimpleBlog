@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 
-const usePosts = (API) => {
+const useNotes = (API) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [posts, setPosts] = useState([]);
+  const [notes, setNotes] = useState([]);
 
-  // When the component renders for the first time, fetch all the posts
+  // When the component renders for the first time, fetch all the notes
   useEffect(() => {
-    getPosts();
+    getNotes();
   }, []);
-  async function getPosts() {
+  async function getNotes() {
     try {
       setLoading(true);
-      const response = await fetch(`${API}/get-posts`);
-      const { posts, error } = await response.json();
+      const response = await fetch(`${API}/get-notes`);
+      const { notes, error } = await response.json();
       if (error) throw new Error(error);
-      setPosts(posts);
+      setNotes(notes);
     } catch (error) {
       setError(error);
     } finally {
@@ -23,14 +23,14 @@ const usePosts = (API) => {
     }
   }
 
-  // Add or delete posts
+  // Add or delete notes
   async function addPost({ title, content }) {
     try {
       if (!title || !content) return;
       setLoading(true);
       const body = JSON.stringify({ title, content });
-      await fetch(`${API}/add-post`, { method: "POST", body });
-      return getPosts(); // Refresh all posts
+      await fetch(`${API}/add-note`, { method: "POST", body });
+      return getNotes(); // Refresh all notes
     } catch (error) {
       setError(error);
     }
@@ -39,14 +39,14 @@ const usePosts = (API) => {
     try {
       setLoading(true);
       const body = JSON.stringify({ id });
-      await fetch(`${API}/delete-post`, { method: "POST", body });
-      return getPosts(); // Refresh all posts
+      await fetch(`${API}/delete-note`, { method: "POST", body });
+      return getNotes(); // Refresh all notes
     } catch (error) {
       setError(error);
     }
   }
   const client = { addPost, deletePost };
-  return { posts, loading, error, client };
+  return { notes, loading, error, client };
 };
 
-export default usePosts;
+export default useNotes;
