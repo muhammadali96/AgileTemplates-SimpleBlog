@@ -1,9 +1,9 @@
-import { Pool } from 'pg';
+import { Pool } from "pg";
 
 export async function handler(req) {
   //
   // Get params
-  const { id } = JSON.parse(req.body);
+  const { title, content } = JSON.parse(req.body);
 
   // Connect to database
   const ssl = { rejectUnauthorized: false };
@@ -11,8 +11,11 @@ export async function handler(req) {
   const database = new Pool({ connectionString, ssl });
 
   try {
-    // Add a new post
-    await database.query(`delete from posts where id = $1`, [id]);
+    // Add a new note
+    await database.query(
+      `insert into notes (title, content, date) values ($1, $2, now())`,
+      [title, content]
+    );
 
     // End the connection and return a success (200) response
     await database.end();
