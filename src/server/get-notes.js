@@ -1,5 +1,5 @@
-import { Pool } from 'pg';
-import generateDB from './config/generateDB';
+import { Pool } from "pg";
+import generateDB from "./config/generateDB";
 
 export async function handler(req) {
   //
@@ -8,7 +8,7 @@ export async function handler(req) {
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: 'No database found (see .env.example file)',
+        error: "No database found (see .env.example file)",
       }),
     };
   }
@@ -19,18 +19,18 @@ export async function handler(req) {
   const database = new Pool({ connectionString, ssl });
 
   try {
-    // Fetch all posts
+    // Fetch all notes
     const result = await database.query(
-      'SELECT * FROM posts ORDER BY date desc;'
+      "SELECT * FROM notes ORDER BY date desc;"
     );
 
     // Close the connection and return the result
     await database.end();
-    return { statusCode: 200, body: JSON.stringify({ posts: result.rows }) };
+    return { statusCode: 200, body: JSON.stringify({ notes: result.rows }) };
 
     // If there is no table, create one with some mock data
   } catch (err) {
-    if (err.message === `relation "posts" does not exist`) {
+    if (err.message === `relation "notes" does not exist`) {
       generateDB(database);
       return await handler(req);
     }

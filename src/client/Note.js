@@ -1,8 +1,8 @@
-import React from 'react';
-import TimeAgo from 'react-timeago';
+import React from "react";
+import TimeAgo from "react-timeago";
 
-// A single blog post
-const Post = ({ data, onDelete }) => {
+// A single blog note
+const Note = ({ data, onDelete }) => {
   return (
     <div style={{ marginBottom: 24 }}>
       <hr />
@@ -20,4 +20,4 @@ const Post = ({ data, onDelete }) => {
   );
 };
 
-export default Post;
+export default Note;
