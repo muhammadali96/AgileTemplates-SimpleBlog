@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import Post from './Post';
+import React, { useEffect, useState } from "react";
+import Posts from './Posts';
 import Form from './Form';
 import './App.css';
 const API = `/.netlify/functions`;
@@ -60,11 +60,7 @@ const App = () => {
     <div className="App">
       <header>SimpleBlog</header>
       <Form onAdd={({ title, content }) => addPost({ title, content })} />
-      <div>
-        {posts.map((post) => (
-          <Post data={post} onDelete={() => deletePost({ id: post.id })} />
-        ))}
-      </div>
+      <Posts onDelete={({ id }) => deletePost({ id })} posts={posts} />
       <hr />
     </div>
   );
